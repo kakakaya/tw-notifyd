@@ -9,6 +9,18 @@ import json
 import twitter as tw
 
 
+def loadConfig():
+    pass
+
+
+def matchRule(rules, message):
+    pass
+
+
+def notifyTweet(rules, message):
+    pass
+
+
 def main():
     with open('key.json') as key:
         keys = key.read()
@@ -27,10 +39,10 @@ def main():
         auth=auth,
         domain="userstream.twitter.com"
     )
+    rules = loadConfig()
     for msg in twitter_stream.user():
-        print(msg)
-
-    pass
+        if matchRule(rules, msg):
+            notifyTweet(rules, msg)
 
 if __name__ == "__main__":
     main()

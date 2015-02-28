@@ -14,7 +14,10 @@ def loadConfig():
 
 
 def matchRule(rules, message):
-    pass
+    if "event" in message.keys():
+        return True
+    else:
+        return False
 
 
 def notifyTweet(rules, message):

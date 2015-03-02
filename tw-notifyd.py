@@ -14,7 +14,7 @@ def loadConfig():
 
 
 def matchRule(rules, message):
-    if "event" in message.keys():
+    if True or len(message) != 23 and len(message) != 26:  # normal tweet or RT
         return True
     else:
         return False
@@ -45,7 +45,10 @@ def main():
     rules = loadConfig()
     for msg in twitter_stream.user():
         if matchRule(rules, msg):
-            notifyTweet(rules, msg)
+            # notifyTweet(rules, msg)
+            pprint(msg),
+            print len(msg)
+            pass
 
 if __name__ == "__main__":
     main()

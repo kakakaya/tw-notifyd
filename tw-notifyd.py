@@ -8,7 +8,7 @@ from pprint import pprint
 from pymongo import MongoClient, DESCENDING
 import json
 import twitter as tw
-import sqlite3
+# import sqlite3
 import argparse
 import datetime
 
@@ -22,8 +22,9 @@ def reformDate(created_at):
     time = datetime.datetime.strptime(created_at, "%a %b %d %H:%M:%S +0000 %Y")
     return time.strftime("(%y/%m/%d_%H:%M:%S)")
 
+
 def matchRule(rules, message):
-    if not "text" in message.keys():
+    if "text" not in message.keys():
         return True
     else:
         return False
@@ -33,7 +34,7 @@ def deleteNotify(msg, db):
     delId = msg["delete"]["status"]["id"]
     tweets = db.tweets
     tweets.create_index([("id", DESCENDING)])
-    delList = list(tweets.find({"id":delId}))
+    delList = list(tweets.find({"id": delId}))
     if len(delList) == 1:
         deletedMsg = delList[0]
         created_at = reformDate(deletedMsg["created_at"])
@@ -48,36 +49,12 @@ def favoriteNotify(msg):
     created_at = reformDate(msg["created_at"])
     print "[FAV]"+created_at+" @"+msg["source"]["screen_name"]+" to @"+msg["target"]["screen_name"]
 
+
 def notifyTweet(tweet):
     pass
 
 
-def main():
-    parser = argparse.ArgumentParser()
-    parser.add_argument('-v', action='store_true')
-    args = parser.parse_args()
-
-    if args.v:
-        verbose = True
-    else:
-        verbose = False
-
-    client = MongoClient()
-    db = client["tw-notifyd_tweet"]
-    tweets = db.tweets
-    with open('key.json') as key:
-        keys = key.read()
-    data = json.loads(keys)
-    # pprint(data)
-    CONSUMER_KEY = data["consumerKey"]
-    CONSUMER_SECRET = data["consumerSecret"]
-    ACCESS_TOKEN = data["accessToken"]
-    ACCESS_TOKEN_SECRET = data["accessSecret"]
-
-    auth = tw.OAuth(
-        ACCESS_TOKEN, ACCESS_TOKEN_SECRET,
-        CONSUMER_KEY, CONSUMER_SECRET
-    )
+def loop(auth):
     twitter_stream = tw.TwitterStream(
         auth=auth,
         domain="userstream.twitter.com"
@@ -107,9 +84,41 @@ def main():
                 pprint(msg)
         elif "friends" in msg.keys():
             pass
+        elif "hangup":
+            # 上に繋げてやりなおす
+            pass
         else:
             print "unknown type",
             pprint(msg)
+
+
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('-v', action='store_true')
+    args = parser.parse_args()
+
+    if args.v:
+        verbose = True
+    else:
+        verbose = False
+
+    client = MongoClient()
+    db = client["tw-notifyd_tweet"]
+    tweets = db.tweets
+    with open('key.json') as key:
+        keys = key.read()
+    data = json.loads(keys)
+    # pprint(data)
+    CONSUMER_KEY = data["consumerKey"]
+    CONSUMER_SECRET = data["consumerSecret"]
+    ACCESS_TOKEN = data["accessToken"]
+    ACCESS_TOKEN_SECRET = data["accessSecret"]
+
+    auth = tw.OAuth(
+        ACCESS_TOKEN, ACCESS_TOKEN_SECRET,
+        CONSUMER_KEY, CONSUMER_SECRET
+    )
+    loop(auth)
 
 
 if __name__ == "__main__":

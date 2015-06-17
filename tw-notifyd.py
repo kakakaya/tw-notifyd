@@ -55,6 +55,9 @@ def notifyTweet(tweet):
 
 
 def loop(auth):
+    client = MongoClient()
+    db = client["tw-notifyd_tweet"]
+    tweets = db.tweets
     twitter_stream = tw.TwitterStream(
         auth=auth,
         domain="userstream.twitter.com"
@@ -72,13 +75,13 @@ def loop(auth):
         elif "delete" in msg.keys():
             # deleted tweet
             deleteNotify(msg, db)
-            if verbose:
-                pprint(msg)
+            # if verbose:
+            #     pprint(msg)
         elif "event" in msg.keys():
             if msg["event"] == "favorite":
                 favoriteNotify(msg)
-                if verbose:
-                    pprint(msg)
+                # if verbose:
+                #     pprint(msg)
             else:
                 print "unknown event",
                 pprint(msg)
@@ -97,14 +100,11 @@ def main():
     parser.add_argument('-v', action='store_true')
     args = parser.parse_args()
 
-    if args.v:
-        verbose = True
-    else:
-        verbose = False
+    # if args.v:
+    #     verbose = True
+    # else:
+    #     verbose = False
 
-    client = MongoClient()
-    db = client["tw-notifyd_tweet"]
-    tweets = db.tweets
     with open('key.json') as key:
         keys = key.read()
     data = json.loads(keys)

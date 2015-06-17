@@ -38,8 +38,7 @@ def deleteNotify(msg, db):
     if len(delList) == 1:
         deletedMsg = delList[0]
         created_at = reformDate(deletedMsg["created_at"])
-        print "[DEL]"+created_at+" @"+deletedMsg["user"]["screen_name"]+": ",
-        pp(deletedMsg["text"])
+        print "[DEL]"+created_at+" @"+deletedMsg["user"]["screen_name"]+": ", + deletedMsg["text"]
         # notifyTweet("[DEL] @"+deletedMsg["user"]["screen_name"]+": "+deletedMsg["text"])
     else:
         # print "[DEL] Unknown."
@@ -97,6 +96,8 @@ def loop(auth):
 
 
 def main():
+    sys.stdout = codecs.lookup("utf_8")[-1](sys.stdout)
+
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', action='store_true')
     args = parser.parse_args()

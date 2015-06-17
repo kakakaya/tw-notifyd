@@ -3,7 +3,7 @@
 # Author: kakakaya, Date: Thu Feb 26 05:23:07 2015
 
 # import os
-# import sys
+import sys
 from pprint import pprint as pp
 from pymongo import MongoClient, DESCENDING
 import json
@@ -11,6 +11,7 @@ import twitter as tw
 # import sqlite3
 import argparse
 import datetime
+import codecs
 
 
 def loadConfig():

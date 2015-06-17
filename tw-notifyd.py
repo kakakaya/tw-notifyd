@@ -3,7 +3,8 @@
 # Author: kakakaya, Date: Thu Feb 26 05:23:07 2015
 
 # import os
-import sys
+# import sys
+# import codecs
 from pprint import pprint as pp
 from pymongo import MongoClient, DESCENDING
 import json
@@ -11,7 +12,6 @@ import twitter as tw
 # import sqlite3
 import argparse
 import datetime
-import codecs
 
 
 def loadConfig():
@@ -97,7 +97,7 @@ def loop(auth):
 
 
 def main():
-    sys.stdout = codecs.lookup("utf_8")[-1](sys.stdout)
+    # sys.stdout = codecs.lookup("utf_8")[-1](sys.stdout)
 
     parser = argparse.ArgumentParser()
     parser.add_argument('-v', action='store_true')

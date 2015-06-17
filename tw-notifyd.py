@@ -39,7 +39,7 @@ def deleteNotify(msg, db):
     if len(delList) == 1:
         deletedMsg = delList[0]
         created_at = reformDate(deletedMsg["created_at"])
-        print "[DEL]"+created_at+" @"+deletedMsg["user"]["screen_name"]+": ", + deletedMsg["text"]
+        print "[DEL]"+created_at+" @"+deletedMsg["user"]["screen_name"]+": ", deletedMsg["text"]
         # notifyTweet("[DEL] @"+deletedMsg["user"]["screen_name"]+": "+deletedMsg["text"])
     else:
         # print "[DEL] Unknown."

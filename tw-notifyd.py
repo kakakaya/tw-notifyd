@@ -4,7 +4,7 @@
 
 # import os
 # import sys
-from pprint import pprint
+from pprint import pprint as pp
 from pymongo import MongoClient, DESCENDING
 import json
 import twitter as tw
@@ -38,7 +38,8 @@ def deleteNotify(msg, db):
     if len(delList) == 1:
         deletedMsg = delList[0]
         created_at = reformDate(deletedMsg["created_at"])
-        print "[DEL]"+created_at+" @"+deletedMsg["user"]["screen_name"]+": "+deletedMsg["text"]
+        print "[DEL]"+created_at+" @"+deletedMsg["user"]["screen_name"]+": ",
+        pp(deletedMsg["text"])
         # notifyTweet("[DEL] @"+deletedMsg["user"]["screen_name"]+": "+deletedMsg["text"])
     else:
         # print "[DEL] Unknown."
@@ -84,7 +85,7 @@ def loop(auth):
                 #     pprint(msg)
             else:
                 print "unknown event",
-                pprint(msg)
+                pp(msg)
         elif "friends" in msg.keys():
             pass
         elif "hangup":
@@ -92,7 +93,7 @@ def loop(auth):
             pass
         else:
             print "unknown type",
-            pprint(msg)
+            pp(msg)
 
 
 def main():

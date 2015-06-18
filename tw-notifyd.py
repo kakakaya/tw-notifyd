@@ -42,7 +42,7 @@ def deleteNotify(msg, db):
         print "[DEL]"+created_at+" @"+deletedMsg["user"]["screen_name"]+": ", deletedMsg["text"]
         # notifyTweet("[DEL] @"+deletedMsg["user"]["screen_name"]+": "+deletedMsg["text"])
     else:
-        # print "[DEL] Unknown."
+        # print "[DEL] Unknown ID:", delId
         pass
 
 
@@ -64,6 +64,7 @@ def loop(auth):
         domain="userstream.twitter.com"
     )
     rules = loadConfig()
+    print "started mainloop"
     for msg in twitter_stream.user():
         # if matchRule(rules, msg):
         #     # notifyTweet(rules, msg)

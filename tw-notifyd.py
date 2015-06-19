@@ -15,7 +15,12 @@ import datetime
 
 
 def loadConfig():
-    pass
+    # メモ:
+    # 強い監視 := 画像も保存、など
+    # 弱い監視 := テキスト本文のみ
+    # 無視 := 保存しない
+    # {{強, 弱}い監視, 無視}をする対象の{アカウント、発言}を分類できるようにする
+    return {}
 
 
 def reformDate(created_at):
@@ -55,7 +60,7 @@ def notifyTweet(tweet):
     pass
 
 
-def loop(auth):
+def loop(auth, args):
     client = MongoClient()
     db = client["tw-notifyd_tweet"]
     tweets = db.tweets
@@ -64,7 +69,10 @@ def loop(auth):
         domain="userstream.twitter.com"
     )
     rules = loadConfig()
-    print "started mainloop"
+    # argsに基いてrulesの上書きを行う
+    if args.v:
+        rules["verbose"] = True
+    print "[INFO]Started loop", rules
     for msg in twitter_stream.user():
         # if matchRule(rules, msg):
         #     # notifyTweet(rules, msg)
@@ -77,13 +85,13 @@ def loop(auth):
         elif "delete" in msg.keys():
             # deleted tweet
             deleteNotify(msg, db)
-            # if verbose:
-            #     pprint(msg)
+            if rules["verbose"]:
+                pp(msg)
         elif "event" in msg.keys():
             if msg["event"] == "favorite":
                 favoriteNotify(msg)
-                # if verbose:
-                #     pprint(msg)
+                if rules["verbose"]:
+                    pp(msg)
             else:
                 print "unknown event",
                 pp(msg)
@@ -104,11 +112,6 @@ def main():
     parser.add_argument('-v', action='store_true')
     args = parser.parse_args()
 
-    # if args.v:
-    #     verbose = True
-    # else:
-    #     verbose = False
-
     with open('key.json') as key:
         keys = key.read()
     data = json.loads(keys)
@@ -122,7 +125,8 @@ def main():
         ACCESS_TOKEN, ACCESS_TOKEN_SECRET,
         CONSUMER_KEY, CONSUMER_SECRET
     )
-    loop(auth)
+    while True:
+        loop(auth, args)
 
 
 if __name__ == "__main__":

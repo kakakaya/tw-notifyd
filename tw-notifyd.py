@@ -88,10 +88,17 @@ def loop(auth, args):
             if rules["verbose"]:
                 pp(msg)
         elif "event" in msg.keys():
-            if msg["event"] == "favorite":
+            event_type = msg["event"]
+            if event_type == "favorite":
                 favoriteNotify(msg)
                 if rules["verbose"]:
                     pp(msg)
+            elif event_type == "favorited_retweet":
+                pass
+            elif event_type == "retweetd_retweet":
+                pass
+            elif event_type == "follow":
+                pass
             else:
                 print "unknown event",
                 pp(msg)

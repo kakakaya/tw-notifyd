@@ -128,11 +128,11 @@ def main():
     ACCESS_TOKEN = data["accessToken"]
     ACCESS_TOKEN_SECRET = data["accessSecret"]
 
-    auth = tw.OAuth(
-        ACCESS_TOKEN, ACCESS_TOKEN_SECRET,
-        CONSUMER_KEY, CONSUMER_SECRET
-    )
     while True:
+        auth = tw.OAuth(
+            ACCESS_TOKEN, ACCESS_TOKEN_SECRET,
+            CONSUMER_KEY, CONSUMER_SECRET
+        )
         loop(auth, args)
 
 

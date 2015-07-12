@@ -69,6 +69,7 @@ def loop(auth, args):
         domain="userstream.twitter.com"
     )
     rules = loadConfig()
+    rules["verbose"] = False
     # argsに基いてrulesの上書きを行う
     if args.v:
         rules["verbose"] = True

@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 # Author: kakakaya, Date: Thu Feb 26 05:23:07 2015
 
-# import os
+import os
 # import sys
 # import codecs
 from pprint import pprint as pp
@@ -20,7 +20,8 @@ def loadConfig(args):
     # 弱い監視 := テキスト本文のみ
     # 無視 := 保存しない
     # {{強, 弱}い監視, 無視}をする対象の{アカウント、発言}を分類できるようにする
-    with open('key.json') as key:
+    config_path = os.path.dirname(__file__)+"/config.json"  # 仮、そのうち指定できるようにする
+    with open(config_path) as key:
         keys = key.read()
         conf = json.loads(keys)
 

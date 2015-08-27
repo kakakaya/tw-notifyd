@@ -86,17 +86,12 @@ def loop(auth, conf):
         auth=auth,
         domain="userstream.twitter.com"
     )
-    rules = loadConfig()
-    rules["verbose"] = False
-    # argsに基いてrulesの上書きを行う
-    if conf["verbose"]:
-        rules["verbose"] = True
-    print("[INFO]Started loop", rules)
+    print("[INFO]Started loop", conf)
 
     try:
         for msg in twitter_stream.user():
-            # if matchRule(rules, msg):
-            #     # notifyTweet(rules, msg)
+            # if matchRule(conf, msg):
+            #     # notifyTweet(conf, msg)
             #     pprint(msg),
             #     print(len(msg))
             #     pass
@@ -106,13 +101,13 @@ def loop(auth, conf):
             elif "delete" in msg.keys():
                 # deleted tweet
                 deleteNotify(msg, db)
-                if rules["verbose"]:
+                if conf["verbose"]:
                     pp(msg)
             elif "event" in msg.keys():
                 event_type = msg["event"]
                 if event_type == "favorite":
                     favoriteNotify(msg)
-                    if rules["verbose"]:
+                    if conf["verbose"]:
                         pp(msg)
                 elif event_type == "favorited_retweet":
                     pass

@@ -123,7 +123,6 @@ def loop(auth, conf):
                 # 上に繋げてやりなおす
                 hangupNotify()
             else:
-                print "unknown type",
                 pp(msg)
 
     except ValueError:

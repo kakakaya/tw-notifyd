@@ -55,3 +55,4 @@ target/
 key.json
 *.dat
 /nohup.out
+/config.json
